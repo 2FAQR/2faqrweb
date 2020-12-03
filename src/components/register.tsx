@@ -65,6 +65,21 @@ const RegisterComponent = () => {
         history.push("/registerqr");
       });
   };
+  const checkIfRegistered = async (token: string) => {
+    try {
+      const res = await fetch(SERVER_BASE_URL + "/qrcode/checkifregister", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      return await res.status;
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   return (
     <>
       <TextField label='Username' onChange={usernameChangeHandler} />

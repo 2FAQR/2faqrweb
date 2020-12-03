@@ -1,18 +1,12 @@
-import React from 'react';
-import { Typography, TextField, Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import { JWT_TOKEN, USERNAME_KEY } from '../constants';
-import { SERVER_BASE_URL } from '../config';
-
-export interface LoginResponse {
-  status: string;
-  message: string;
-  Authorization: string;
-}
+import React from "react";
+import { Typography, TextField, Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { JWT_TOKEN, USERNAME_KEY } from "../constants";
+import { SERVER_BASE_URL } from "../config";
 
 const LoginComponent = () => {
-  const [username, setUsername] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
+  const [username, setUsername] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
   const history = useHistory();
   const usernameChangeHandler = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -28,42 +22,38 @@ const LoginComponent = () => {
   const loginUser = async (
     username: string,
     password: string
-  ): Promise<LoginResponse | undefined> => {
+  ): Promise<any> => {
     try {
-      const response: Response = await fetch(SERVER_BASE_URL + '/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response: Response = await fetch(SERVER_BASE_URL + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: 'test@test.com',
-          password: 'password',
+          email: username,
+          password: password,
         }),
       });
-      const loginResponse: LoginResponse = await response.json();
-      return loginResponse;
+      return await response.json();
     } catch (error) {
       console.warn(error.message);
     } finally {
-      console.log('Login Function finished');
+      console.log("Login Function finished");
     }
   };
 
   const submitHandler = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log(username + ' ' + password);
-    loginUser(username, password).then(
-      (loginResponse: LoginResponse | undefined) => {
-        if (loginResponse) {
-          sessionStorage.setItem(JWT_TOKEN, loginResponse.Authorization);
-          console.log(loginResponse.message);
-        }
+    loginUser(username, password).then((loginResponse) => {
+      if (loginResponse) {
+        sessionStorage.setItem(JWT_TOKEN, loginResponse["Authorization"]);
+        console.log(loginResponse.message);
+        history.push("/loginqr");
       }
-    );
+    });
     const { sessionStorage } = window;
     if (username) {
       sessionStorage.setItem(USERNAME_KEY, username);
     }
-    history.push('/loginqr');
   };
   return (
     <>
