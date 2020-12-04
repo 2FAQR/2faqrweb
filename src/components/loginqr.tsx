@@ -65,9 +65,10 @@ const LoginQR = () => {
 
   React.useEffect(() => {
     const token = sessionStorage.getItem(JWT_TOKEN);
+    const username = sessionStorage.getItem(USERNAME_KEY);
     if (token) {
       getLoginHash(token).then((res: { hash: string }) => {
-        setQrVal(res.hash + "____" + token);
+        setQrVal(res.hash + "____" + token + "____" + username);
       });
     }
   }, []);

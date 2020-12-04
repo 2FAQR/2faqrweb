@@ -1,6 +1,6 @@
 import QRCode from "react-qr-code";
 import React from "react";
-import { JWT_TOKEN } from "../constants";
+import { JWT_TOKEN, USERNAME_KEY } from "../constants";
 import { POLLING_TIME_MILI_SECONDS, SERVER_BASE_URL } from "../config";
 import { useHistory } from "react-router-dom";
 
@@ -47,10 +47,11 @@ const RegisterQR = () => {
   };
   React.useEffect(() => {
     const token = sessionStorage.getItem(JWT_TOKEN);
+    const username = sessionStorage.getItem(USERNAME_KEY);
     if (token) {
       getHashRegister(token).then((res) => {
         console.log(res.hash);
-        setHash(res.hash + "____" + token);
+        setHash(res.hash + "____" + token + "____" + username);
       });
     }
   }, []);

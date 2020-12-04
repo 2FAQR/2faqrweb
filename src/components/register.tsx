@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, TextField, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { SERVER_BASE_URL } from "../config";
-import { JWT_TOKEN } from "../constants";
+import { JWT_TOKEN, USERNAME_KEY } from "../constants";
 
 export interface RegisterResponse {
   status: string;
@@ -58,6 +58,7 @@ const RegisterComponent = () => {
       .then((registerResponse: RegisterResponse | undefined) => {
         if (registerResponse) {
           sessionStorage.setItem(JWT_TOKEN, registerResponse.Authorization);
+          sessionStorage.setItem(USERNAME_KEY, username);
           console.log(registerResponse.message);
         }
       })
