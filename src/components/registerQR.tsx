@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 const RegisterQR = () => {
   const [hash, setHash] = React.useState<string>("");
   const [hasVerified, setVerified] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const history = useHistory();
 
   React.useEffect(() => {
@@ -29,7 +30,7 @@ const RegisterQR = () => {
       }
     }, POLLING_TIME_MILI_SECONDS);
     return () => clearInterval(interval);
-  }, [hasVerified]);
+  }, [hasVerified, history]);
 
   const getHashRegister = async (token: string) => {
     try {
@@ -46,12 +47,14 @@ const RegisterQR = () => {
     }
   };
   React.useEffect(() => {
+    setLoading(true);
     const token = sessionStorage.getItem(JWT_TOKEN);
     const username = sessionStorage.getItem(USERNAME_KEY);
     if (token) {
       getHashRegister(token).then((res) => {
         console.log(res.hash);
         setHash(res.hash + "____" + token + "____" + username);
+        setLoading(false);
       });
     }
   }, []);
@@ -71,7 +74,11 @@ const RegisterQR = () => {
     }
   };
 
-  return <QRCode value={hash} />;
+  return loading ? (
+    <div>{"Loading..."}</div>
+  ) : (
+    <QRCode value={hash} size={500} />
+  );
 };
 
 export default RegisterQR;

@@ -64,8 +64,6 @@ const LoginComponent = () => {
         type='password'
       />
       <Button onClick={submitHandler}>Login</Button>
-      <Typography>{username}</Typography>
-      <Typography>{password}</Typography>
     </>
   );
 };

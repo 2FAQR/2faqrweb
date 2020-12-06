@@ -1,14 +1,13 @@
 import QRCode from "react-qr-code";
 import React from "react";
-import { Typography } from "@material-ui/core";
 import { JWT_TOKEN, USERNAME_KEY } from "../constants";
 import { useHistory } from "react-router-dom";
 import { POLLING_TIME_MILI_SECONDS, SERVER_BASE_URL } from "../config";
 
 const LoginQR = () => {
   const [qrVal, setQrVal] = React.useState<string>("");
-  const [username, setUsername] = React.useState<string>();
   const [hasVerified, setVerified] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const history = useHistory();
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -64,19 +63,20 @@ const LoginQR = () => {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     const token = sessionStorage.getItem(JWT_TOKEN);
     const username = sessionStorage.getItem(USERNAME_KEY);
     if (token) {
       getLoginHash(token).then((res: { hash: string }) => {
         setQrVal(res.hash + "____" + token + "____" + username);
+        setLoading(false);
       });
     }
   }, []);
-  return (
-    <>
-      <QRCode value={qrVal} />
-      <Typography>{username}</Typography>
-    </>
+  return loading ? (
+    <div>{"Loading..."}</div>
+  ) : (
+    <QRCode value={qrVal} size={500} />
   );
 };
 

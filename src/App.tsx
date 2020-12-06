@@ -9,21 +9,38 @@ import Home from "./components/home";
 function App() {
   return (
     <Router>
-      <div>
-        <ul>
-          <li>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <ul
+          style={{
+            display: "flex",
+            listStyle: "none",
+            padding: "0",
+            fontSize: "20px",
+          }}
+        >
+          <li style={{ margin: "20px" }}>
             <Link to='/login'>Login</Link>
           </li>
-          <li>
+          <li style={{ margin: "20px" }}>
             <Link to='/register'>Register</Link>
           </li>
         </ul>
 
         <Switch>
-          <Route path='/login'>
+          <Route exact path='/'>
             <LoginComponent />
           </Route>
-          <Route path='/register'>
+          <Route exact path='/login'>
+            <LoginComponent />
+          </Route>
+          <Route exact path='/register'>
             <RegisterComponent />
           </Route>
           <Route path='/loginqr'>

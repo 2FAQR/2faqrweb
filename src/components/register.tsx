@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, TextField, Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { SERVER_BASE_URL } from "../config";
 import { JWT_TOKEN, USERNAME_KEY } from "../constants";
@@ -90,8 +90,6 @@ const RegisterComponent = () => {
         type='password'
       />
       <Button onClick={submitHandler}>Register</Button>
-      <Typography>{username}</Typography>
-      <Typography>{password}</Typography>
     </>
   );
 };
